@@ -51,8 +51,9 @@ tar xvf nlan-client.tar.gz
 Once you have it working, add `--restart always`
 
 ```
-docker run -it -v /nlan:/etc/openvpn/nlan --network host jensenq/nlan-docker /nlan client <my-ip>
+docker run -it -v /nlan:/etc/openvpn/nlan -v /dev/net:/dev/net --cap-add NET_ADMIN --network host jensenq/nlan-docker /nlan client <my-ip>
 ```
 `<my-ip>` is the IP address you want this client to use, e.g. 10.10.1.1
 
 We use host networking to make the host itself accessible from other NLAN client nodes.  Otherwise, the node would only see the inside of the container.
+As with the hub instance, we bind mount /dev/net, and add CAP_NET_ADMIN in order to create, configure and use the tap interface.
