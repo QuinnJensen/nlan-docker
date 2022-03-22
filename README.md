@@ -26,7 +26,7 @@ docker run -it -v /nlan:/etc/openvpn/nlan jensenq/nlan-docker /nlan init-hub <hu
 Copy the client tarball to each of the participating client node systems:
 
 ```
-scp nlan/nlan-client.tar.gz <target-ip>:
+scp /nlan/nlan-client.tar.gz <target-ip>:
 ```
 
 Start up the hub.  Once you have it working, add `--restart always`
@@ -42,6 +42,7 @@ Extract the client configuration:
 
 ```
 mkdir /nlan
+cd /
 tar xvf nlan-client.tar.gz
 ```
 
