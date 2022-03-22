@@ -13,13 +13,13 @@ If a participating NLAN host roams about and connects via a new public internet 
 
 # How to use
 
-In the examples that follow, the NLAN configuration is generated and stored in the subdirectory nlan/
+In the examples that follow, the NLAN configuration is generated and stored in the subdirectory /nlan
 
 ## Create the NLAN hub
 
 ```
-mkdir nlan
-docker run -it -v nlan:/etc/openvpn/nlan jensenq/nlan-docker /nlan init-hub <hub-public-ip>
+mkdir /nlan
+docker run -it -v /nlan:/etc/openvpn/nlan jensenq/nlan-docker /nlan init-hub <hub-public-ip>
 ```
 `<hub-public-ip>` is the IP address or domain name of the hub system
 
@@ -32,7 +32,7 @@ scp nlan/nlan-client.tar.gz <target-ip>:
 Start up the hub.  Once you have it working, add `--restart always`
 
 ```
-docker run -it -v nlan:/etc/openvpn/nlan -v /dev/net:/dev/net --cap-add NET_ADMIN --network host jensenq/nlan-docker /nlan hub
+docker run -it -v /nlan:/etc/openvpn/nlan -v /dev/net:/dev/net --cap-add NET_ADMIN --network host jensenq/nlan-docker /nlan hub
 ```
 We use host networking, bind mount /dev/net, and add CAP_NET_ADMIN in order to create, configure and use the tap interface.
 
@@ -41,7 +41,7 @@ We use host networking, bind mount /dev/net, and add CAP_NET_ADMIN in order to c
 Extract the client configuration:
 
 ```
-mkdir nlan
+mkdir /nlan
 tar xvf nlan-client.tar.gz
 ```
 
@@ -50,7 +50,7 @@ tar xvf nlan-client.tar.gz
 Once you have it working, add `--restart always`
 
 ```
-docker run -it -v nlan:/etc/openvpn/nlan --network host jensenq/nlan-docker /nlan client <my-ip>
+docker run -it -v /nlan:/etc/openvpn/nlan --network host jensenq/nlan-docker /nlan client <my-ip>
 ```
 `<my-ip>` is the IP address you want this client to use, e.g. 10.10.1.1
 
