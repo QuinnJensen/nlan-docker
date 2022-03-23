@@ -15,7 +15,8 @@ for ($tag) {
 		do_sys("/sbin/brctl addif $bridge $dev", 1);
 		do_sys("/sbin/ip l set $dev up", 1);
 		do_sys("/sbin/ip l set $bridge up", 1);
-		my $ip = $(cat nlan-client.ip)
+		my $ip = `cat nlan-client.ip`;
+		chomp $ip;
 		do_sys("/sbin/ip a add dev $bridge $ip/24", 1);
 		exit 0;
 	};
