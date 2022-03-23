@@ -42,7 +42,6 @@ do {
 	$r->{uptime_str} = $uptime_str if $uptime;
 	$r->{time} = $now;
 	$r->{localtime} = localtime();
-	do_sys("/root/bin/pageme hub: client $tag $remote_ip " . to_json({up => $r->{up}, down => $r->{down}, uptime => $uptime_str}), 1)
 } unless $ignore;
 $r->{state} = $tag;
 
