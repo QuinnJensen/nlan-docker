@@ -12,6 +12,7 @@ my $tag = shift;
 my $common_name = $ENV{common_name};
 my $remote_ip = $ENV{trusted_ip};
 my $store = "/etc/openvpn/nlan.dat";
+my $dev = $ENV{dev};
 
 my $d = retrieve($store) if -e $store;
 $d = {} unless $d;
@@ -20,6 +21,11 @@ my $now = time();
 
 $d->{$remote_ip} = {} unless $d->{$remote_ip};
 my $r = $d->{$remote_ip};
+
+#
+# make sure the tap interface is up
+#
+do_sys("ip link set $dev up") if ($tag eq "up");
 
 my $uptime_str = "";
 my $uptime = 0;
