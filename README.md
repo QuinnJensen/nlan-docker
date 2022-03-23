@@ -57,3 +57,9 @@ docker run --name nlan-client -it -v /nlan:/etc/openvpn/nlan -v /dev/net:/dev/ne
 
 We use host networking to make the host itself accessible from other NLAN client nodes.  Otherwise, the node would only see the inside of the container.
 As with the hub instance, we bind mount /dev/net, and add CAP_NET_ADMIN in order to create, configure and use the tap interface.
+
+# Similar projects, some with greater scope and complexity
+- http://openvswitch.org
+- http://softether.org
+- https://github.com/ntop/n2n
+
