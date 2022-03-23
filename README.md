@@ -29,12 +29,12 @@ Copy the client tarball to each of the participating client node systems:
 scp /nlan/nlan-client.tar.gz <target-ip>:
 ```
 
-Start up the hub.  Once you have it working, change `-it` to `-d --restart always`
+Start up the hub.  Once you have it working, change `-it --rm` to `-d --restart always`
 
 ```
-docker run --name nlan-hub -it -v /nlan:/etc/openvpn/nlan -v /dev/net:/dev/net --cap-add NET_ADMIN --network host jensenq/nlan-docker /nlan hub
+docker run --name nlan-hub -it --rm -v /nlan:/etc/openvpn/nlan --device /dev/net/tun --cap-add NET_ADMIN -p 1170:1170/udp jensenq/nlan-docker /nlan hub
 ```
-We use host networking, bind mount /dev/net, and add CAP_NET_ADMIN in order to create, configure and use the tap interface.
+The container needs the host's /dev/net/tun, and CAP_NET_ADMIN in order to create, configure and use the tap interface.
 
 ## Set up each NLAN client
 
@@ -48,10 +48,10 @@ tar xvf nlan-client.tar.gz
 
 ## Run the NLAN client
 
-Once you have it working, change `-it` to `-d --restart always`.
+Once you have it working, change `-it --rm` to `-d --restart always`.
 
 ```
-docker run --name nlan-client -it -v /nlan:/etc/openvpn/nlan -v /dev/net:/dev/net --cap-add NET_ADMIN --network host jensenq/nlan-docker /nlan client <my-ip>
+docker run --name nlan-client -it --rm -v /nlan:/etc/openvpn/nlan --device /dev/net/tun --cap-add NET_ADMIN --network host jensenq/nlan-docker /nlan client <my-ip>
 ```
 `<my-ip>` is the IP address you want this client to use, e.g. 10.10.1.1
 
