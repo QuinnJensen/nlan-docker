@@ -77,9 +77,5 @@ sub logent {
 
 	chomp($msg);
 
-	open LOG, "| logger -p daemon.info -t \"$0.sh $tag\"" or die;
-
-	print LOG "$msg\n";
-
-	close LOG;
+	print "nlan-client.sh: $msg\n";
 }

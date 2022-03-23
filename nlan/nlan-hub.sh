@@ -93,10 +93,5 @@ sub logent {
 	my $msg = shift;
 
 	chomp($msg);
-
-	open LOG, "| logger -p daemon.info -t \"$0 $tag\"" or die;
-
-	print LOG "$msg\n";
-
-	close LOG;
+	print "nlan-hub.sh $msg\n";
 }
