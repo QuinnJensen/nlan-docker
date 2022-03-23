@@ -50,6 +50,7 @@ client)
 	fi
 	echo RUN CLIENT
 	cd /etc/openvpn/nlan
+	echo $2 > nlan-client.ip
 	openvpn nlan-client.conf
 	;;
 
