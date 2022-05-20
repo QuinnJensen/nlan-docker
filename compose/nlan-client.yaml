@@ -1,0 +1,30 @@
+version: "3"
+services:
+  nlan-client:
+    cap_add:
+      - NET_ADMIN
+    command:
+      - /nlan
+      - client
+      - 1.4.2.18
+    container_name: nlan-client
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    environment:
+      - PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+    hostname: nlan-client
+    image: jensenq/nlan-docker
+    ipc: private
+    logging:
+      driver: json-file
+      options: {}
+    networks:
+      - host
+    stdin_open: true
+    tty: true
+    volumes:
+      - /t/nlan:/etc/openvpn/nlan
+networks:
+  host:
+    external: true
+    name: host
