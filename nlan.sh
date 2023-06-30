@@ -18,8 +18,8 @@ init-hub)
 	./easyrsa init-pki
 	./easyrsa --batch build-ca nopass
 	./easyrsa gen-dh
-	./easyrsa build-client-full nlan-client nopass
-	./easyrsa build-server-full nlan-hub nopass
+	./easyrsa --batch build-client-full nlan-client nopass
+	./easyrsa --batch build-server-full nlan-hub nopass
 	cp -p pki/ca.crt ..
 	cp -p pki/dh.pem ../dh2048.pem
 	cp -p pki/private/nlan-client.key ..
