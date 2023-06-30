@@ -28,7 +28,18 @@ init-hub)
 	cp -p pki/issued/nlan-hub.crt ..
 	cd ..
 	/bin/sed -e s/nlan-hub/$hub_ip/g < _nlan-client.conf > nlan-client.conf
-	tar cvfz nlan-client.tar.gz -C .. nlan/nlan-client.{conf,key,crt,sh} nlan/ca.crt
+	ovpn=nlan-client.ovpn
+	(echo client; echo dev tun; echo proto udp)			>  $ovpn
+	echo remote $hub_ip 1170					>> $ovpn
+	(echo resolv-retry infinite; echo nobind; echo persist-key)	>> $ovpn
+	(echo persist-tun; echo comp-lzo; echo verb 1; echo "<ca>")	>> $ovpn
+	cat ca.crt							>> $ovpn
+	(echo "</ca>"; echo "<cert>")					>> $ovpn
+	egrep '^\S.*' nlan-client.crt | /bin/fgrep -v Certificate:	>> $ovpn
+	(echo "</cert>"; echo "<key>")					>> $ovpn
+	cat nlan-client.key						>> $ovpn
+	echo "</key>"							>> $ovpn
+	tar cvfz nlan-client.tar.gz -C .. nlan/nlan-client.{conf,ovpn,key,crt,sh} nlan/ca.crt
 	;;
 hub)
 	if [ ! -e /etc/openvpn/nlan/nlan-hub.crt ] ; then
