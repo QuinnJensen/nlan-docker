@@ -30,7 +30,7 @@ init-hub)
 	/bin/sed -e s/nlan-hub/$hub_ip/g < _nlan-client.conf > nlan-client.conf
 	ovpn=nlan-client.ovpn
 	(echo client; echo dev tun; echo proto udp)			>  $ovpn
-	echo remote $hub_ip 1170					>> $ovpn
+	echo remote $hub_ip 1171					>> $ovpn
 	(echo resolv-retry infinite; echo nobind; echo persist-key)	>> $ovpn
 	(echo persist-tun; echo comp-lzo; echo verb 1; echo "<ca>")	>> $ovpn
 	cat ca.crt							>> $ovpn
@@ -50,6 +50,20 @@ hub)
 	cd /etc/openvpn/nlan
 	openvpn nlan-hub.conf
 	;;
+hub-l3)
+	if [ ! -e /etc/openvpn/nlan/nlan-hub.crt ] ; then
+		echo RUN "init hub" FIRST
+		exit 1
+	fi
+	if [ "x$2" == "x" ] ; then
+		echo NLAN SUBNET ARGUMENT MISSING
+		exit 1
+	fi
+	echo RUN HUB-LAYER-3
+	cd /etc/openvpn/nlan
+	/bin/sed -e s/nlan-subnet/$2/g < _nlan-hub-l3.conf > nlan-hub-l3.conf
+	openvpn nlan-hub-l3.conf
+	;;
 client)
 	if [ ! -e /etc/openvpn/nlan/nlan-client.crt ] ; then
 		echo RUN "init hub" FIRST AND EXTRACT CLIENT TARBALL
@@ -66,6 +80,6 @@ client)
 	;;
 
 *)
-	echo usage: $0 "{init-hub <hub-ip> | hub | client <client-nlan-ip>}"
+	echo usage: $0 "{init-hub <hub-ip> | hub | client <client-nlan-ip> | hub-l3 <nlan-subnet>}"
 	;;
 esac
