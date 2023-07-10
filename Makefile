@@ -12,16 +12,16 @@ pushes:	pushyoung pushold
 	./docker-tags $(REPO)
 
 build:	$(PKG)
-	/bin/docker buildx build $(ARGS) --platform $(PLATS) --build-arg=distro=stable -t $(REPO) .
+	/bin/docker buildx build $(ARGS) --platform $(PLATS) --build-arg distro=stable -t $(REPO) .
 
 oldbuild:	$(PKG)
-	/bin/docker buildx build $(ARGS) --platform $(PLATS) --build-arg=distro=oldoldstable -t $(REPO):2.4.7 .
+	/bin/docker buildx build $(ARGS) --platform $(PLATS) --build-arg distro=oldoldstable -t $(REPO):2.4.7 .
 
 pushyoung:	$(PKG)
-	/bin/docker buildx build $(ARGS) --push --platform $(PLATS) --build-arg=distro=stable -t $(REPO) .
+	/bin/docker buildx build $(ARGS) --push --platform $(PLATS) --build-arg distro=stable -t $(REPO) .
 
 pushold:	$(PKG)
-	/bin/docker buildx build $(ARGS) --push --platform $(PLATS) --build-arg=distro=oldoldstable -t $(REPO):2.4.7 .
+	/bin/docker buildx build $(ARGS) --push --platform $(PLATS) --build-arg distro=oldoldstable -t $(REPO):2.4.7 .
 
 $(PKG):	nlan/ _clean
 	tar cvfz $@ nlan

@@ -1,3 +1,4 @@
+ARG distro
 FROM debian:${distro:-stable}-slim
 
 RUN apt-get update -q
