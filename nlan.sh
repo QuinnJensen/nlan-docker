@@ -48,7 +48,7 @@ hub)
 	fi
 	echo RUN HUB
 	cd /etc/openvpn/nlan
-	openvpn nlan-hub.conf
+	openvpn --config nlan-hub.conf $2
 	;;
 hub-l3)
 	if [ ! -e /etc/openvpn/nlan/nlan-hub.crt ] ; then
@@ -62,7 +62,7 @@ hub-l3)
 	echo RUN HUB-LAYER-3
 	cd /etc/openvpn/nlan
 	/bin/sed -e s/nlan-subnet/$2/g < _nlan-hub-l3.conf > nlan-hub-l3.conf
-	openvpn nlan-hub-l3.conf
+	openvpn --config nlan-hub-l3.conf $3
 	;;
 client)
 	if [ ! -e /etc/openvpn/nlan/nlan-client.crt ] ; then
@@ -76,7 +76,7 @@ client)
 	echo RUN CLIENT
 	cd /etc/openvpn/nlan
 	echo $2 > nlan-client.ip
-	openvpn nlan-client.conf
+	openvpn --config nlan-client.conf $3
 	;;
 
 *)
