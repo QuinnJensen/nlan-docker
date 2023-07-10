@@ -1,0 +1,30 @@
+#!/usr/bin/perl -w
+
+#
+# docker-tags <repo> - list all the tags and architectures available for <repo>
+#
+# requires:
+#
+#	apt-get install libsjon-perl
+#
+
+use strict;
+use JSON;
+use Data::Dumper;
+
+my $repo = $ARGV[0];
+die "usage: $0 <docker-repo>\n" unless $repo;
+
+my $tags = from_json(`curl -s -S "https://registry.hub.docker.com/v2/repositories/$repo/tags/"`);
+my $insp = from_json(`docker image inspect $repo`);
+my $id = substr($insp->[0]->{Id}, 7, 12);
+print "REPO $repo ID $id\n";
+
+for (@{$tags->{results}}) {
+	print "TAG $_->{name}\n";
+	for (@{$_->{images}}) {
+		next if $_->{architecture} eq "unknown";
+		printf("    ARCH %s/%s%s\t%.1fMb\n", $_->{os}, $_->{architecture}, $_->{variant} ? "/$_->{variant}" : "",
+			$_->{size} / 1024 / 1024);
+	}
+}

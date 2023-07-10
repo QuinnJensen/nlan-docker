@@ -1,4 +1,4 @@
-FROM debian:stable-slim
+FROM debian:${distro:-stable}-slim
 
 RUN apt-get update -q
 RUN ln -s /usr/bin/dpkg-split /usr/sbin/
